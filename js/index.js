@@ -19,7 +19,7 @@ const productos = [
 
 let productos = [];
 
-fetch("https://jsonblob.com/api/jsonBlob/1372498670355931136")
+fetch("https://jsonblob.com/api/jsonBlob/1372590868086841344")
   .then(response => {
     if (!response.ok) throw new Error("Error al cargar los artículos");
     return response.json();
