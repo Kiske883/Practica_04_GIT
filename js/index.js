@@ -26,7 +26,9 @@ fetch("https://jsonblob.com/api/jsonBlob/1372498670355931136")
   })
   .then(data => {
     productos = data;
+    poblarSelectMarcas();
     productsRender(); 
+    filtroPorMarca();
   })
   .catch(error => {
     console.error("Error al obtener productos:", error);
@@ -94,17 +96,60 @@ function generarEstrellas(valoracion, cantidadReseñas) {
   `;
 }
 
+// Poblamos el select con las marcas que recibamos de la API
+function poblarSelectMarcas() {
+  const select = document.getElementById("search-category");
+  const marcasUnicas = [...new Set(productos.map(p => p.empresa))];
+
+  // Limpiar opciones antiguas y añadir "Todas las marcas"
+  select.innerHTML = `<option value="">Todas las marcas</option>`;
+
+  marcasUnicas.forEach(marca => {
+    const option = document.createElement("option");
+    option.value = marca;
+    option.textContent = marca;
+    select.appendChild(option);
+  });
+}
+
+function filtroPorMarca() {
+
+  const boton = document.getElementById("search-button");
+  const input = document.getElementById("search-input");
+  const select = document.getElementById("search-category");
+
+  boton.addEventListener("click", () => {
+    const texto = input.value.toLowerCase();
+    const marcaSeleccionada = select.value;
+
+    const filtrados = productos.filter(prod => {
+      const coincideTexto =
+        prod.nombre.toLowerCase().includes(texto) ||
+        prod.descripcion.toLowerCase().includes(texto);
+
+      const coincideMarca =
+        marcaSeleccionada === "" || prod.empresa === marcaSeleccionada;
+
+      return coincideTexto && coincideMarca;
+    });
+
+    productsRender(filtrados);
+  });
+}
+
 // Instanciar carrito
 const carrito = new Carrito();
 
 // Renderizar productos en pantalla
 // Lo encapsulamos en una function, para poder tener el control y ejecutar el render justo despues 
 // de la recepcion de la respuesta del API
-function productsRender() {
+function productsRender(lista = productos) {
   
   const contenedor = document.getElementById("product-container");
 
-  productos.forEach(prod => {
+  contenedor.innerHTML = "";
+
+  lista.forEach(prod => {
 
     const div = document.createElement("article");
     div.classList.add("product-card");
