@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container container__wrapper">
+        <div class="header-container--title">
+          <img
+            src="images\logo_agoodshop_recortado_negro.png"
+            alt="agoodShop logo"
+            class="logo-img"
+          />
+        </div>
+
+        <div class="search-bar">
+          <select class="search-category">
+            <option>Todas las marcas</option>
+            <option>Ropa</option>
+            <option>Electrónica</option>
+            <option>Libros</option>
+          </select>
+          <input type="text" placeholder="Buscar..." class="search-input" />
+          <button class="search-button">🔍</button>
+        </div>
+
+        <nav class="header-container--options">
+          <ul class="header-container--options__list">
+            <li>
+              <a class="option" href="">
+                <span class="line-small">Hola, identifícate</span><br />
+                <span class="line-bold">Cuenta y listas ▼</span>
+              </a>
+            </li>
+            <li>
+              <a class="option" href="">
+                <span class="line-small">Devoluciones</span><br />
+                <span class="line-bold">y Pedidos</span>
+              </a>
+            </li>
+            <li>
+              <a href="">
+                <span class="line-small">&nbsp;</span>
+                <div class="cart-icon">
+                  🛒<span class="cart-count" id="cart-count">0</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container__wrapper">
+      <section id="product-container" class="product-container"></section>
+
+      <aside class="carrito">
+        <h2>Carrito</h2>
+        <ul id="carrito-items"></ul>
+        <p>Total: $<span id="carrito-total">0</span></p>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+      </aside>
+    </main>
+
+    <script src="js/index.js"></script>
+  </body>
+</html>
