@@ -259,13 +259,15 @@ main {
   padding: 1rem;    
 }
 
-.carrito h2 {
-  font-size: 1.5rem;
-  color: #333;
+.cart-title {
+  font-size: 1.8rem;
   margin-bottom: 1rem;
+  color: #333;
   text-align: center;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 0.5rem;
+  background-color: #ffeeba;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 #carrito-items {
