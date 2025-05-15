@@ -9,11 +9,11 @@
 
 /*
 const productos = [
-  { id: 1, empresa: "Levis", nombre: "Camisa", familia: "Camisa", descripcion: "Camisa chulisima hawaiana que filipas", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 20, valoracion: "5", dto: "5" },
-  { id: 2, empresa: "Dickies", nombre: "Pantalón", familia: "Pantalón", descripcion: "Pantalones xanxan que caben 4", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 35, valoracion: "4", dto: "" },
-  { id: 3, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Unas Jordan que haces orejas nen", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 60, valoracion: "3", dto: "" },
-  { id: 4, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Otras Jordan bonitas no, lo siguiente", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 120.5, valoracion: "5", dto: "10" },
-  { id: 5, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Estas no son Jordan, pero son las Nike guarache", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 90.99, valoracion: "4", dto: "" }
+  { id: 1, empresa: "Levis", nombre: "Camisa", familia: "Camisa", descripcion: "Camisa chulisima hawaiana que filipas", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 20, valoracion: "5", totalValoraciones: "2950", dto: "5" },
+  { id: 2, empresa: "Dickies", nombre: "Pantalón", familia: "Pantalón", descripcion: "Pantalones xanxan que caben 4", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 35, valoracion: "4", totalValoraciones: "2950", dto: "" },
+  { id: 3, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Unas Jordan que haces orejas nen", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 60, valoracion: "3", totalValoraciones: "2950", dto: "" },
+  { id: 4, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Otras Jordan bonitas no, lo siguiente", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 120.5, valoracion: "5", totalValoraciones: "2950", dto: "10" },
+  { id: 5, empresa: "Nike", nombre: "Zapatos", familia: "Zapatos", descripcion: "Estas no son Jordan, pero son las Nike guarache", opciones: "", informacion: "", imagen: "https://placehold.co/1000x1000", precio: 90.99, valoracion: "4", totalValoraciones: "2950", dto: "" }
 ];
 */
 
@@ -27,7 +27,7 @@ fetch("https://jsonblob.com/api/jsonBlob/1372498670355931136")
   .then(data => {
     productos = data;
     poblarSelectMarcas();
-    productsRender(); 
+    productsRender();
     filtroPorMarca();
   })
   .catch(error => {
@@ -51,6 +51,14 @@ class Carrito {
     this.renderizar();
   }
 
+  eliminar(id) {
+    const index = this.items.findIndex(item => item.id === id);
+    if (index !== -1) {
+      this.items.splice(index, 1);
+      this.renderizar();
+    }
+  }
+
   vaciar() {
     this.items = [];
     this.renderizar();
@@ -69,9 +77,21 @@ class Carrito {
     lista.innerHTML = "";
 
     this.items.forEach(item => {
+
       const li = document.createElement("li");
-      li.textContent = `${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}`;
+
+      li.innerHTML = `${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}
+                        <button class="btn-eliminar" data-id="${item.id}" title="Eliminar">❌</button>
+                        `;
+
       lista.appendChild(li);
+    });
+
+    lista.querySelectorAll(".btn-eliminar").forEach(boton => {
+      boton.addEventListener("click", (e) => {
+        const id = parseInt(e.target.dataset.id);
+        this.eliminar(id);
+      });
     });
 
     total.textContent = this.total();
@@ -118,6 +138,14 @@ function filtroPorMarca() {
   const input = document.getElementById("search-input");
   const select = document.getElementById("search-category");
 
+  // forzamos el click del boton si el select de marca cambia
+  select.addEventListener("change", () => boton.click());
+
+  // forzamos el click del boton si apretamos enter con focus del input
+  input.addEventListener("keyup", e => {
+    if (e.key === "Enter") boton.click();
+  });
+
   boton.addEventListener("click", () => {
     const texto = input.value.toLowerCase();
     const marcaSeleccionada = select.value;
@@ -144,7 +172,7 @@ const carrito = new Carrito();
 // Lo encapsulamos en una function, para poder tener el control y ejecutar el render justo despues 
 // de la recepcion de la respuesta del API
 function productsRender(lista = productos) {
-  
+
   const contenedor = document.getElementById("product-container");
 
   contenedor.innerHTML = "";
@@ -162,7 +190,7 @@ function productsRender(lista = productos) {
     <p class="product-title">${prod.descripcion}</p>
   `;
 
-    html += generarEstrellas(prod.valoracion, "2950");
+    html += generarEstrellas(prod.valoracion, prod.totalValoraciones);
 
     html += `
     <div class="product-price">
