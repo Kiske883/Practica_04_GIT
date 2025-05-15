@@ -80,7 +80,7 @@ class Carrito {
 
       const li = document.createElement("li");
 
-      li.innerHTML = `${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}
+      li.innerHTML = `${item.nombre} x${item.cantidad} - ${item.precio * item.cantidad}€
                         <button class="btn-eliminar" data-id="${item.id}" title="Eliminar">❌</button>
                         `;
 
