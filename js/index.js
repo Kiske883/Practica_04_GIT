@@ -5,6 +5,8 @@
 // https://github.com/Kiske883/Practica04_API_Node
 
 // Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1372498670355931136
+// Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1372590868086841344
+// Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1380092072845041664
 // Llamada al Api Node de Render : "https://practica04-api-node.onrender.com/api/articulos"
 
 /*
@@ -19,7 +21,7 @@ const productos = [
 
 let productos = [];
 
-fetch("https://jsonblob.com/api/jsonBlob/1372590868086841344")
+fetch("https://jsonblob.com/api/jsonBlob/1380092072845041664")
   .then(response => {
     if (!response.ok) throw new Error("Error al cargar los artículos");
     return response.json();
@@ -37,6 +39,7 @@ fetch("https://jsonblob.com/api/jsonBlob/1372590868086841344")
 
 // Clase Carrito
 class Carrito {
+
   constructor() {
     this.items = [];
   }
