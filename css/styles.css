@@ -243,7 +243,7 @@ main {
   gap: 2rem;
 }
 
-/* Estilos del modal */
+/* Inicio Estilos del modal */
 .modal {
   display: none;
   position: fixed;
@@ -261,7 +261,8 @@ main {
   padding: 1.5rem;
   border-radius: 10px;
   width: 90%;
-  max-width: 400px;
+  max-width: 1200px;
+  min-width: 320px;
   position: relative;
 }
 
