@@ -44,6 +44,7 @@
                 <span class="line-bold">y Pedidos</span>
               </a>
             </li>
+            <!--
             <li>
               <a href="">
                 <span class="line-small">&nbsp;</span>
@@ -52,6 +53,13 @@
                 </div>
               </a>
             </li>
+            -->
+            <li>
+              <span class="line-small">&nbsp;</span>
+              <button class="cart-icon" id="abrirCarritoBtn" title="Ver carrito">
+                🛒<span class="cart-count" id="cart-count">0</span>
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
@@ -59,13 +67,24 @@
 
     <main class="container__wrapper">
       <section id="product-container" class="product-container"></section>
-
+      <!--
       <aside class="carrito">
         <h2 class="cart-title">¡Mira lo que llevas!</h2>
         <ul id="carrito-items"></ul>
         <p>Total: <span id="carrito-total">0</span> <strong>€</strong></p>
         <button id="vaciar-carrito">Vaciar Carrito</button>
       </aside>
+-->
+
+      <div id="modalCarrito" class="modal">
+        <div class="modal-content carrito">
+          <span class="close">&times;</span>
+          <h2 class="cart-title">¡Mira lo que llevas!</h2>
+          <ul id="carrito-items"></ul>
+          <p>Total: <span id="carrito-total">0</span> <strong>€</strong></p>
+          <button id="vaciar-carrito">Vaciar Carrito</button>
+        </div>
+      </div>
     </main>
 
     <script src="js/index.js"></script>

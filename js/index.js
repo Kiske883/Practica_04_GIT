@@ -235,3 +235,18 @@ function productsRender(lista = productos) {
 
 // Vaciar carrito
 document.getElementById("vaciar-carrito").addEventListener("click", () => carrito.vaciar());
+
+document.querySelector(".cart-icon").onclick = () => {
+  document.getElementById("modalCarrito").style.display = "block";
+};
+
+document.querySelector(".modal .close").onclick = () => {
+  document.getElementById("modalCarrito").style.display = "none";
+};
+
+window.onclick = (event) => {
+  const modal = document.getElementById("modalCarrito");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
