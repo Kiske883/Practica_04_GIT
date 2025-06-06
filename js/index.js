@@ -4,8 +4,6 @@
 // pero es donde tengo publicado mi API realizada en Node.js : dejo el link de gitHub
 // https://github.com/Kiske883/Practica04_API_Node
 
-// Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1372498670355931136
-// Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1372590868086841344
 // Llamada al Api JsonBlob : https://jsonblob.com/api/jsonBlob/1380092072845041664
 // Llamada al Api Node de Render : "https://practica04-api-node.onrender.com/api/articulos"
 
