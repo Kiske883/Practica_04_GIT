@@ -73,9 +73,14 @@ class Carrito {
 
   renderizar() {
 
-    const lista = document.getElementById("carrito-items");
-    const total = document.getElementById("carrito-total");
-    const contador = document.getElementById("cart-count");
+    // Modificamos la forma de localizar los objetos a raiz de la clase de Felix 20250605
+    // const lista = document.getElementById("carrito-items");
+    // const total = document.getElementById("carrito-total");
+    // const contador = document.getElementById("cart-count");
+
+    const lista = document.querySelector("#carrito-items");
+    const total = document.querySelector("#carrito-total");
+    const contador = document.querySelector("#cart-count");
 
     lista.innerHTML = "";
 
@@ -90,7 +95,7 @@ class Carrito {
       lista.appendChild(li);
     });
 
-    lista.querySelectorAll(".btn-eliminar").forEach(boton => {
+    lista.querySelectorAll(".btn-eliminar").forEach( ( boton ) => {
       boton.addEventListener("click", (e) => {
         const id = parseInt(e.target.dataset.id);
         this.eliminar(id);
@@ -99,13 +104,15 @@ class Carrito {
 
     total.textContent = this.total();
 
+    // LAN0 - 202506005 - Utilizamos reduce para totalizar el total de productos
     const totalCantidad = this.items.reduce((nConta, item) => nConta + item.cantidad, 0);
     contador.textContent = totalCantidad;
   }
 }
 
-// Genracion de estrellas por producto
+// LAN0 - 202506005 - Generacion de estrellas por producto
 function generarEstrellas(valoracion, cantidadReseñas) {
+
   const maxEstrellas = 5;
   const estrellasLlenas = Math.floor(valoracion);
   const estrellasVacias = maxEstrellas - estrellasLlenas;
@@ -121,8 +128,11 @@ function generarEstrellas(valoracion, cantidadReseñas) {
 
 // Poblamos el select con las marcas que recibamos de la API
 function poblarSelectMarcas() {
-  const select = document.getElementById("search-category");
-  const marcasUnicas = [...new Set(productos.map(p => p.empresa))];
+
+  // const select = document.getElementById("search-category");
+  const select = document.querySelector("#search-category");
+
+  const marcasUnicas = [...new Set(productos.map( (p) => p.empresa))];
 
   // Limpiar opciones antiguas y añadir "Todas las marcas"
   select.innerHTML = `<option value="">Todas las marcas</option>`;
@@ -137,18 +147,23 @@ function poblarSelectMarcas() {
 
 function filtroPorMarca() {
 
-  const boton = document.getElementById("search-button");
-  const input = document.getElementById("search-input");
-  const select = document.getElementById("search-category");
+  // const boton = document.getElementById("search-button");
+  // const input = document.getElementById("search-input");
+  // const select = document.getElementById("search-category");
 
-  // forzamos el click del boton si el select de marca cambia
+  const boton = document.querySelector("#search-button");
+  const input = document.querySelector("#search-input");
+  const select = document.querySelector("#search-category");  
+
+  // LAN0 - 20250605 - Capturamos el evento change del Select y forzamos forzamos el click del boton de filtro
   select.addEventListener("change", () => boton.click());
 
-  // forzamos el click del boton si apretamos enter con focus del input
+  // LAN0 - 20250605 - Hacemos lo mismo con el pressKey, esperando el intro en el input buscar
   input.addEventListener("keyup", e => {
     if (e.key === "Enter") boton.click();
   });
 
+  // LAN0 - 20250605 - Capturamos el click y filtramos los productos dependiendo de la selección
   boton.addEventListener("click", () => {
     const texto = input.value.toLowerCase();
     const marcaSeleccionada = select.value;
@@ -176,7 +191,8 @@ const carrito = new Carrito();
 // de la recepcion de la respuesta del API
 function productsRender(lista = productos) {
 
-  const contenedor = document.getElementById("product-container");
+  // const contenedor = document.getElementById("product-container");
+  const contenedor = document.querySelector("#product-container");
 
   contenedor.innerHTML = "";
 
