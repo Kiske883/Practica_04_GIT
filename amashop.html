@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/amashop.css" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-container container__wrapper">
+        <div class="header-container--title">
+          <img
+            src="images\logo_agoodshop_recortado_negro.png"
+            alt="agoodShop logo"
+            class="logo-img"
+          />
+        </div>
+
+        <div class="search-bar">
+          <select id="search-category" class="search-category"></select>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            id="search-input"
+            class="search-input"
+          />
+          <button id="search-button" class="search-button">🔍</button>
+        </div>
+
+        <nav class="header-container--options">
+          <ul class="header-container--options__list">
+            <li>
+              <a class="option" href="">
+                <span class="line-small">Hola, identifícate</span><br />
+                <span class="line-bold">Cuenta y listas ▼</span>
+              </a>
+            </li>
+            <li>
+              <a class="option" href="">
+                <span class="line-small">Devoluciones</span><br />
+                <span class="line-bold">y Pedidos</span>
+              </a>
+            </li>
+            <!--
+            <li>
+              <a href="">
+                <span class="line-small">&nbsp;</span>
+                <div class="cart-icon">
+                  🛒<span class="cart-count" id="cart-count">0</span>
+                </div>
+              </a>
+            </li>
+            -->
+            <li>
+              <span class="line-small">&nbsp;</span>
+              <button class="cart-icon" id="abrirCarritoBtn" title="Ver carrito">
+                🛒<span class="cart-count" id="cart-count">0</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container__wrapper">
+      <section id="product-container" class="product-container"></section>
+
+      <!-- LAN0 - 20250606 - Modificamos el carrito a modal
+      <aside class="carrito">
+        <h2 class="cart-title">¡Mira lo que llevas!</h2>
+        <ul id="carrito-items"></ul>
+        <p>Total: <span id="carrito-total">0</span> <strong>€</strong></p>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+      </aside>
+      -->
+
+      <div id="modalCarrito" class="modal">
+        <div class="modal-content carrito">
+          <div>
+          <span class="close">&times;</span>
+          </div>
+          <h2 class="cart-title">¡Mira lo que llevas!</h2>
+          <ul id="carrito-items"></ul>
+          <p>Total: <span id="carrito-total">0</span> <strong>€</strong></p>
+          <button id="vaciar-carrito">Vaciar Carrito</button>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/amashop.js"></script>
+  </body>
+</html>

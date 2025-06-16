@@ -1,0 +1,179 @@
+/* Inicio Estilos genericos de html */
+.main-body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.container__wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.line-bottom {
+  border-bottom: 1px solid #ccc;
+}
+/* Final Estilos genericos de html */
+
+/* Inicio Estilos header */
+
+.header-container--title {
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+/* Final Estilos header */
+
+.card__wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+/* Inicio Estilos Table */
+.carrito-tabla {
+  width: 70%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  margin-top: 1rem;
+  max-width: 800px;
+}
+
+.carrito-tabla th {
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+}
+
+.carrito-tabla td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+}
+
+.carrito-tabla td small {
+  color: #888;
+}
+
+.cantidad {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cantidad button {
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #f4f4f4;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cantidad input {
+  width: 50px;
+  text-align: center;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+/* FInal Estilos Table */
+
+/* Inicio Estilos Total */
+.carrito {
+  background-color: #fdfdfd;
+  padding: 0.25rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  width: 30%;
+  min-width: 250px;
+  font-family: sans-serif;
+}
+
+.cart-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+#carrito-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.item-nombre {
+  color: #333;
+}
+
+.item-precio {
+  font-weight: 500;
+  color: #333;
+}
+
+.carrito hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1.5rem 0;
+}
+
+.carrito-total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carrito-total span {
+  font-size: 1.5rem;
+  color: #000;
+}
+
+.total-general {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.total-label {
+  color: #000;
+}
+
+.total-importe {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.moneda {
+  font-weight: bold;
+}
+/* Final Estilos Total */
+
+/* Inicio Estilos footer */
+.container__wrapper-footer {
+  text-align: center;
+  padding: 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+}
+/* Final Estilos footer */

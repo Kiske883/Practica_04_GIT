@@ -106,7 +106,9 @@ class Carrito {
     const totalCantidad = this.items.reduce((nConta, item) => nConta + item.cantidad, 0);
     contador.textContent = totalCantidad;
   }
+  
 }
+// Final Clase carrito
 
 // LAN0 - 202506005 - Generacion de estrellas por producto
 function generarEstrellas(valoracion, cantidadReseñas) {
