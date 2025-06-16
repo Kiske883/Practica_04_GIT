@@ -86,7 +86,7 @@ class Carrito {
 
       const li = document.createElement("li");
 
-      li.innerHTML = `${item.nombre} x${item.cantidad} - ${item.precio * item.cantidad}€
+      li.innerHTML = `${item.nombre} x ${item.cantidad} - ${(item.precio * item.cantidad).toFixed(2)}€
                         <button class="btn-eliminar" data-id="${item.id}" title="Eliminar">❌</button>
                         `;
 
@@ -100,7 +100,7 @@ class Carrito {
       });
     });
 
-    total.textContent = this.total();
+    total.textContent = this.total().toFixed(2);
 
     // LAN0 - 202506005 - Utilizamos reduce para totalizar el total de productos
     const totalCantidad = this.items.reduce((nConta, item) => nConta + item.cantidad, 0);
