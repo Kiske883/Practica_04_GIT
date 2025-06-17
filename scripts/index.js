@@ -36,7 +36,16 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error al obtener productos:", error);
         });
 
-    // Eliminamos textos del html y se los añadimos desde js
+    // Eliminamos textos del html y se los añadimos desde js, para dejar html lo mas limpio posible
+    const myTotalHeader = document.querySelector('.cart-title');
+    myTotalHeader.textContent = "Total" ;    
+
+    const myTotalQuantity = document.querySelector('.total-label');
+    myTotalQuantity.textContent = "TOTAL" ;
+
+    const myCarritoTotal = document.querySelector('#cart-total');
+    myCarritoTotal.textContent = "0.00" ;
+
     const myTitleText = document.querySelector('.header-container--title');
     myTitleText.textContent = 'agoodShop';
 
@@ -47,20 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const carrito = new Carrito();
 
-function renderizar(carrito) {
+function totalRender(carrito) {
 
     // LAN0 - 20250606 - Modificamos la forma de localizar los objetos a raiz de la clase de Felix 20250605
-    // const lista = document.getElementById("carrito-items");
-    // const total = document.getElementById("carrito-total");
+    // const lista = document.getElementById("cart-items");
+    // const total = document.getElementById("cart-total");
 
-    const lista = document.querySelector("#carrito-items");
-    const total = document.querySelector("#carrito-total");
+    const lista = document.querySelector("#cart-items");
+    const total = document.querySelector("#cart-total");
     const template = document.querySelector("#template-item");
 
     // Felix : aún utilizando template, para que no añada productos indefinidamente
     //         tengo que eliminar el contenido anterior, uso innerHTML por que creo es
     //         lo más comodo, he visto que puedo utilizar un bucle y eliminar todos 
-    //         los nodos en luga de innerHTML ... 
+    //         los nodos en lugar de innerHTML ... 
     //         while (lista.firstChild) {
     //           lista.removeChild(lista.firstChild);
     //         }
@@ -88,10 +97,34 @@ function renderizar(carrito) {
 
 }
 
+function headerProductsRender() {
+
+    const contenedor = document.querySelector(".th-header-container");    
+    const template = document.querySelector("#product-header-template");
+    const clone = template.content.cloneNode(true);
+    const tr = clone.querySelector("tr");
+
+    const headerProduct = clone.querySelector(".header-product");
+    const headerQuantity = clone.querySelector(".header-cantidad");
+    const headerUnity = clone.querySelector(".header-unidad");
+    const headerTotal = clone.querySelector(".header-total");
+
+    headerProduct.textContent = "Producto" ;
+    headerQuantity.textContent = "Cantidad" ;
+    headerUnity.textContent = "Unidad" ;
+    headerTotal.textContent = "Total" ;
+
+    contenedor.appendChild(tr);
+
+}
+
 function productsRender(lista = productos) {
+    
+    headerProductsRender() ;
 
     const contenedor = document.querySelector(".tb-products-container");
-    const template = document.getElementById("product-row-template");
+    // const template = document.getElementById("product-row-template");
+    const template = document.querySelector("#product-row-template");
 
     // LAN0 - 20250613 - Lo comentado anteriormente
     contenedor.innerHTML = "";

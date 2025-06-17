@@ -25,7 +25,7 @@ class Carrito {
                 });
             }
         }
-        renderizar(this);
+        totalRender(this);
     }
     
     obtenerInformacionProducto(sku) {

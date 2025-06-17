@@ -16,31 +16,18 @@
 
     <main class="container__wrapper">
       <div class="card__wrapper">
-        <table class="carrito-tabla">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Cantidad</th>
-              <th>Unidad</th>
-              <th>Total</th>
-            </tr>
-          </thead>
+        <table class="cart-table">
+          <thead class="th-header-container"></thead>
           <tbody class="tb-products-container"></tbody>
         </table>
-        <!--
-        <aside class="carrito">
-          <h2 class="cart-title">Total</h2>
-          <ul id="carrito-items"></ul>
-          <p>Total: <span id="carrito-total">0</span> <strong>€</strong></p>
-        </aside> -->
 
         <aside class="carrito">
-          <h2 class="cart-title">Total</h2>
-          <ul id="carrito-items"></ul>
+          <h2 class="cart-title"></h2>
+          <ul id="cart-items"></ul>
           <div class="total-general">
-            <span class="total-label">TOTAL</span>
+            <span class="total-label"></span>
             <span class="total-importe">
-              <span id="carrito-total">0.00</span>
+              <span id="cart-total"></span>
               <span class="moneda"></span>
             </span>
           </div>
@@ -58,7 +45,7 @@
         <th class="header-product"></th>
         <th class="header-cantidad"></th>
         <th class="header-unidad"></th>
-        <th class="header.total"></th>
+        <th class="header-total"></th>
       </tr>
     </template>
 
@@ -91,7 +78,7 @@
     <!-- LAN0 - 20250612
          Añadimos el script al final del document para no tener problemas con la interaccion 
          con js de objetos que todavia no se hayan renderizado -->
-    <script src="scripts/carrito.js"></script>   
-    <script src="scripts/index.js"></script>    
+    <script src="scripts/carrito.js"></script>
+    <script src="scripts/index.js"></script>
   </body>
 </html>

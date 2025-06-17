@@ -32,7 +32,7 @@
 }
 
 /* Inicio Estilos Table */
-.carrito-tabla {
+.cart-table {
   width: 70%;
   border-collapse: collapse;
   font-family: sans-serif;
@@ -40,7 +40,7 @@
   max-width: 800px;
 }
 
-.carrito-tabla th {
+.cart-table th {
   text-align: left;
   padding: 0.75rem;
   font-weight: 600;
@@ -48,13 +48,13 @@
   border-bottom: 1px solid #ddd;
 }
 
-.carrito-tabla td {
+.cart-table td {
   padding: 1rem 0.75rem;
   vertical-align: middle;
   border-bottom: 1px solid #eee;
 }
 
-.carrito-tabla td small {
+.cart-table td small {
   color: #888;
 }
 
@@ -103,7 +103,7 @@
   margin-bottom: 1rem;
 }
 
-#carrito-items {
+#cart-items {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -130,7 +130,7 @@
   margin: 1.5rem 0;
 }
 
-.carrito-total {
+.cart-total {
   font-weight: bold;
   font-size: 1.2rem;
   display: flex;
@@ -138,7 +138,7 @@
   align-items: center;
 }
 
-.carrito-total span {
+.cart-total span {
   font-size: 1.5rem;
   color: #000;
 }
