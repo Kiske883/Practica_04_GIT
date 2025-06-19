@@ -40,7 +40,8 @@ class Carrito {
         // Es igual, devuelvo textualmente lo que pide la practica ( sku y quantity )
         const myItem = this.items.find(item => item.SKU === sku);
 
-        return myItem ? { sku: myItem.SKU, quantity: myItem.cantidad } : null;
+        // return myItem ? { sku: myItem.SKU, quantity: myItem.cantidad } : null;
+        return myItem ? new Item(myItem.SKU, myItem.cantidad) : null;
 
     }
     

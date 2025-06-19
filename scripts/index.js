@@ -6,45 +6,39 @@ const listaProductos = {
               {"SKU": "IOKW9BQ9F3","title": "Funda de piel","price": "79.99"} ] } ;
 */
 
-let listaProductos = [];
 let moneda = "";
 let productos = [];
 
-// Lo envolvemos en DomContentLoaded para asegurarnos que el render puede acceder a todos los objetos
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("https://jsonblob.com/api/jsonBlob/1382678408647073792")
-        .then(response => {
-            if (!response.ok) throw new Error("Error al cargar los artículos");
-            return response.json();
-        })
-        .then(data => {
+// El init me he visto obligado a convertirlo en asincrono para poder llamar 
+// a la function loadTemplates pero que realmente no sería necesario ya que al final no
+// cargo los templates de templates.html sino directamente de los templates de index.html
 
-            // Informo las variables en el momento que recibo la respuesta
-            // para no tener problemas de undefined
-            listaProductos = data;
-            moneda = listaProductos.currency;
-            productos = listaProductos.products;
+const init = async (data) => {
 
-            productsRender();
+    // Cargamos los templates al principio de todo
+    // await loadTemplates();
 
-            // aqui renderizamos la moneda, ya que es cuando nos aseguramos que hemos recibido los datos
-            // del API
-            const myCurrency = document.querySelector('.moneda');
-            myCurrency.textContent = moneda;
-        })
-        .catch(error => {
-            console.error("Error al obtener productos:", error);
-        });
+    // Informo las variables en el momento que recibo la respuesta
+    // para no tener problemas de undefined
+    moneda = data.currency;
+    productos = data.products;
+
+    productsRender();
+
+    // aqui renderizamos la moneda, ya que es cuando nos aseguramos que hemos 
+    // recibido los datos del API
+    const myCurrency = document.querySelector('.moneda');
+    myCurrency.textContent = moneda;
 
     // Eliminamos textos del html y se los añadimos desde js, para dejar html lo mas limpio posible
     const myTotalHeader = document.querySelector('.cart-title');
-    myTotalHeader.textContent = "Total" ;    
+    myTotalHeader.textContent = "Total";
 
     const myTotalQuantity = document.querySelector('.total-label');
-    myTotalQuantity.textContent = "TOTAL" ;
+    myTotalQuantity.textContent = "TOTAL";
 
     const myCarritoTotal = document.querySelector('#cart-total');
-    myCarritoTotal.textContent = "0.00" ;
+    myCarritoTotal.textContent = "0.00";
 
     const myTitleText = document.querySelector('.header-container--title');
     myTitleText.textContent = 'agoodShop';
@@ -52,13 +46,65 @@ document.addEventListener("DOMContentLoaded", () => {
     const myFooterText = document.querySelector('.container__wrapper-footer');
     myFooterText.textContent = '© agoodShop';
 
+}
+
+// LAN0 - 20250618 - He montado un html para tener los templates separados y darle más 
+//                   claridad, y así dejar el index.html en su minimima expresión. Ahora
+//                   no se si realmente es buena praxis ... creo que más claro queda
+
+// LAN0 - 20250619 - Mi gozo en un pozo : CORS vino a visitarme :(
+
+// Opcion 1 : chrome.exe --disable-web-security --user-data-dir="C:\temp\chrome"    
+// Opcion 2 : https://cors-anywhere.herokuapp.com/corsdemo
+
+// He tenido problemas con CORS en la petición fetch para recuperar template.html, ya que desde live Server de 
+// VisualCode funciona sin problemas, pero si lo ejecuto directamente de file:// que entiendo es como lo vas a ejecutar,
+// el navegador me devuelve Error de CORS, pensaba que seria tan facil como en java añadirle 
+// Access-Control-Allow-Origin y listo, pero no lo he conseguido.
+
+// He encontrado 2 / 3 soluciones ... 
+// - modificar la configuración del navegador, desestimado. 
+// - utilizar un proxy cors-anywhere.herokuapp.com que tambien he desestimado.
+// - o que se ejecute desde un servidor web, que tambien he desestimado. 
+
+// así que al final he decidido hacer Rollback y dejar los tags de templates en el mismo index.html :S
+
+async function loadTemplates() {
+  const response = await fetch('templates.html');
+  const text = await response.text();
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+
+  // Importamos el template al DOM
+  document.body.append(...doc.body.children);
+}
+
+// Lo envolvemos en DomContentLoaded para asegurarnos que el render puede acceder a todos los objetos
+document.addEventListener("DOMContentLoaded", () => {
+
+    // const proxy = 'https://cors-anywhere.herokuapp.com/';
+    const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792';
+
+    fetch( url )
+        .then(response => {
+            if (!response.ok) throw new Error("Error al cargar los artículos");
+            return response.json();
+        })
+        .then(data => {
+            init(data);
+        })
+        .catch(error => {
+            console.error("Error al obtener productos:", error);
+        });
+
 });
 
 const carrito = new Carrito();
 
-function totalRender(carrito) {
+const totalRender = (carrito) => {
 
-    // LAN0 - 20250606 - Modificamos la forma de localizar los objetos a raiz de la clase de Felix 20250605
+    // LAN0 - 20250606 - Modificamos el metodo de localizar los objetos a raiz de la clase de Felix 20250605
     // const lista = document.getElementById("cart-items");
     // const total = document.getElementById("cart-total");
 
@@ -74,7 +120,7 @@ function totalRender(carrito) {
     //           lista.removeChild(lista.firstChild);
     //         }
     //         ... pero es que lo encuentro feo, no se, no creo que haya ningun problema de 
-    //         seguridad, ya que es mi codigo quien controla lo que se añade al innerHtml en este caso ""
+    //         seguridad, ya que es mi codigo quien controla lo que se añade al innerHtml, en este caso ""
 
     lista.innerHTML = "";
 
@@ -91,39 +137,48 @@ function totalRender(carrito) {
 
         // Añadir al DOM
         lista.appendChild(clone);
-    });    
+    });
 
     total.textContent = carrito.obtenerCarrito().total;
 
 }
 
-function headerProductsRender() {
+const headerProductsRender = () => {
 
-    const contenedor = document.querySelector(".th-header-container");    
+    const contenedor = document.querySelector(".th-header-container");
     const template = document.querySelector("#product-header-template");
     const clone = template.content.cloneNode(true);
     const tr = clone.querySelector("tr");
 
+    /*
     const headerProduct = clone.querySelector(".header-product");
     const headerQuantity = clone.querySelector(".header-cantidad");
     const headerUnity = clone.querySelector(".header-unidad");
     const headerTotal = clone.querySelector(".header-total");
+    */
 
-    headerProduct.textContent = "Producto" ;
-    headerQuantity.textContent = "Cantidad" ;
-    headerUnity.textContent = "Unidad" ;
-    headerTotal.textContent = "Total" ;
+    // LAN0 - 20250618 - Para mejorar codigo, desestructuro el array devuelto por querySelectorAll
+    const [
+        headerProduct,
+        headerQuantity,
+        headerUnity,
+        headerTotal
+    ] = tr.querySelectorAll("th");
+
+    headerProduct.textContent = "Producto";
+    headerQuantity.textContent = "Cantidad";
+    headerUnity.textContent = "Unidad";
+    headerTotal.textContent = "Total";
 
     contenedor.appendChild(tr);
 
 }
 
-function productsRender(lista = productos) {
-    
-    headerProductsRender() ;
+const productsRender = (lista = productos) => {
+
+    headerProductsRender();
 
     const contenedor = document.querySelector(".tb-products-container");
-    // const template = document.getElementById("product-row-template");
     const template = document.querySelector("#product-row-template");
 
     // LAN0 - 20250613 - Lo comentado anteriormente

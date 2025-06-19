@@ -1,0 +1,42 @@
+<!-- templates.html -->
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <!-- Inicio de los Templates -->
+    <template id="product-header-template">
+      <tr>
+        <th class="header-product"></th>
+        <th class="header-cantidad"></th>
+        <th class="header-unidad"></th>
+        <th class="header-total"></th>
+      </tr>
+    </template>
+
+    <template id="product-row-template">
+      <tr>
+        <td>
+          <strong class="product-title"></strong><br />
+          <small class="product-sku"></small>
+        </td>
+        <td>
+          <div class="cantidad">
+            <button class="btn-restar">-</button>
+            <input class="inputNumber" type="number" value="0" />
+            <button class="btn-sumar">+</button>
+          </div>
+        </td>
+        <td class="product-price"></td>
+        <td class="product-total"></td>
+      </tr>
+    </template>
+
+    <template id="template-item">
+      <li class="item">
+        <span class="item-title"></span>
+        <span class="item-price"></span>
+      </li>
+    </template>
+    <!-- Final de los Templates -->
+  </body>
+</html>     
