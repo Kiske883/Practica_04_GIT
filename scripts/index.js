@@ -15,6 +15,7 @@ let productos = [];
 
 const init = async (data) => {
 
+    // LAN0 - 20250620 - Anulado por Error de CORS, una lastima pq el index.html era minimalista
     // Cargamos los templates al principio de todo
     // await loadTemplates();
 
@@ -64,19 +65,33 @@ const init = async (data) => {
 
 // He encontrado 2 / 3 soluciones ... 
 // - modificar la configuración del navegador, desestimado. 
-// - utilizar un proxy cors-anywhere.herokuapp.com que tambien he desestimado.
+// - utilizar un proxy por ejemplo, cors-anywhere.herokuapp.com que tambien he desestimado.
 // - o que se ejecute desde un servidor web, que tambien he desestimado. 
 
 // así que al final he decidido hacer Rollback y dejar los tags de templates en el mismo index.html :S
 
+// Esta es la función que iba a utilizar, pero solo funciona si lo lanzo desde vsCode con LiverServer o desde
+// un servidor Web, así que la mantengo, pq me parece buena idea, siempre y cuando la web este ubicada
+// en un Tomcat o XAMPP o parecido, pero no ejecutandose directamente desde local con dblClick a index.html
 async function loadTemplates() {
+
+  // Petición para obtener el contenido de mi templates  
   const response = await fetch('templates.html');
+
+  // Convertimos la response a texto
   const text = await response.text();
 
   const parser = new DOMParser();
+
+  // Convertimos nuestro texto a doc HTML completo
   const doc = parser.parseFromString(text, 'text/html');
 
-  // Importamos el template al DOM
+  // Extraemos todos los nodos de body de nuestro doc y lo importamos al final del DOM
+  // const children = doc.body.children;
+  // for (const child of children) {
+  // document.body.append(child);
+  // }
+  // Versión azucarada
   document.body.append(...doc.body.children);
 }
 
