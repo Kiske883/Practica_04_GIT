@@ -9,6 +9,10 @@ const listaProductos = {
 let moneda = "";
 let productos = [];
 
+// Utilizo constantes hardcodeadas para informar min y max de stocks
+const minUds = 0;
+const maxUds = 99;
+
 // El init me he visto obligado a convertirlo en asincrono para poder llamar 
 // a la function loadTemplates pero que realmente no sería necesario ya que al final no
 // cargo los templates de templates.html sino directamente de los templates de index.html
@@ -75,33 +79,40 @@ const init = async (data) => {
 // en un Tomcat o XAMPP o parecido, pero no ejecutandose directamente desde local con dblClick a index.html
 async function loadTemplates() {
 
-  // Petición para obtener el contenido de mi templates  
-  const response = await fetch('templates.html');
+    // Petición para obtener el contenido de mi templates  
+    const response = await fetch('templates.html');
 
-  // Convertimos la response a texto
-  const text = await response.text();
+    // Convertimos la response a texto
+    const text = await response.text();
 
-  const parser = new DOMParser();
+    const parser = new DOMParser();
 
-  // Convertimos nuestro texto a doc HTML completo
-  const doc = parser.parseFromString(text, 'text/html');
+    // Convertimos nuestro texto a doc HTML completo
+    const doc = parser.parseFromString(text, 'text/html');
 
-  // Extraemos todos los nodos de body de nuestro doc y lo importamos al final del DOM
-  // const children = doc.body.children;
-  // for (const child of children) {
-  // document.body.append(child);
-  // }
-  // Versión azucarada
-  document.body.append(...doc.body.children);
+    // Extraemos todos los nodos de body de nuestro doc y lo importamos al final del DOM
+    // const children = doc.body.children;
+    // for (const child of children) {
+    // document.body.append(child);
+    // }
+    // Versión azucarada
+    document.body.append(...doc.body.children);
 }
 
 // Lo envolvemos en DomContentLoaded para asegurarnos que el render puede acceder a todos los objetos
 document.addEventListener("DOMContentLoaded", () => {
 
     // const proxy = 'https://cors-anywhere.herokuapp.com/';
-    const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792';
 
-    fetch( url )
+    // FELIX : He dejado estas 2 URLs en jsonBlob, donde el API retorna 3 o 5 productos, para hacer pruebas
+    //         de renderizado
+    // Tres productos
+    const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792'; 
+
+    // Cinco productos
+    // const url = 'https://jsonblob.com/api/jsonBlob/1385546057181749248'; 
+
+    fetch(url)
         .then(response => {
             if (!response.ok) throw new Error("Error al cargar los artículos");
             return response.json();
@@ -134,8 +145,8 @@ const totalRender = (carrito) => {
     //         while (lista.firstChild) {
     //           lista.removeChild(lista.firstChild);
     //         }
-    //         ... pero es que lo encuentro feo, no se, no creo que haya ningun problema de 
-    //         seguridad, ya que es mi codigo quien controla lo que se añade al innerHtml, en este caso ""
+    //         ... pero es que lo encuentro feo, no creo que haya ningun problema de seguridad, 
+    //         ya que es mi codigo quien controla lo que se añade al innerHtml, en este caso ""
 
     lista.innerHTML = "";
 
@@ -189,6 +200,19 @@ const headerProductsRender = () => {
 
 }
 
+// LAN0 - 20250620 - Esta funcion, la añadiría como metodo a la clase carrito pero para no meter la pata
+//                   salvo getTotal(), voy a mantenerme fiel a los metodos descritos de la practica
+const getReviewedQuantity = (cantidad) => {
+
+    if (isNaN(cantidad)) cantidad = parseInt(minUds);
+
+    if (cantidad < parseInt(minUds)) cantidad = parseInt(minUds);
+    if (cantidad > parseInt(maxUds)) cantidad = parseInt(maxUds);
+
+    return cantidad;
+
+}
+
 const productsRender = (lista = productos) => {
 
     headerProductsRender();
@@ -209,6 +233,14 @@ const productsRender = (lista = productos) => {
         const totalEl = clone.querySelector(".product-total");
 
         const inputCantidad = clone.querySelector(".inputNumber");
+
+        // LAN0 - 20250620 - Despues de clase 20250619 añadimos min y maximos
+        //                   Aún viendo desde inspeccionador que lso inputs tienen los atributos min y max 
+        //                   bien informados, puedo superar los limites, así que lo voy a controlarlo
+        //                   en el momento en que reciba el evento tanto de los +/- como el change del input
+        inputCantidad.min = minUds;
+        inputCantidad.max = maxUds;
+
         const btnRestar = clone.querySelector(".btn-restar");
         const btnSumar = clone.querySelector(".btn-sumar");
 
@@ -223,34 +255,51 @@ const productsRender = (lista = productos) => {
         };
 
         let producto = carrito.obtenerInformacionProducto(prod.SKU);
-        let cantidad = producto ? producto.cantidad : 0;
+        let cantidad = producto ? producto.cantidad : minUds;
 
         inputCantidad.value = cantidad;
         actualizarTotal(cantidad);
 
+        // LAN0 - 20250620 - al añadir minUds, podria ser modificable en lugar de 0 por ejemplo 10, tengo que controlar que si minUds > 0
+        //                   actualice el total, ya que si no arrancaria con los productos por ejemplo a 10, y carrito estaria vacio.
+        if (!producto) {
+            carrito.actualizarUnidades(prod, cantidad);
+        }
+
         btnRestar.addEventListener("click", () => {
-            cantidad = Math.max(0, parseInt(inputCantidad.value) - 1);
+
+            cantidad = Math.max(inputCantidad.min, parseInt(inputCantidad.value) - 1);
+            // Compruebo que cantidad este entre los parametros min y max permitidos
+            cantidad = getReviewedQuantity(cantidad);
+
             inputCantidad.value = cantidad;
             carrito.actualizarUnidades(prod, cantidad);
             actualizarTotal(cantidad);
         });
 
         btnSumar.addEventListener("click", () => {
-            cantidad = parseInt(inputCantidad.value) + 1;
+
+            cantidad = Math.min(inputCantidad.max, parseInt(inputCantidad.value) + 1);
+            // Compruebo que cantidad este entre los parametros min y max permitidos
+            cantidad = getReviewedQuantity(cantidad);
+
             inputCantidad.value = cantidad;
             carrito.actualizarUnidades(prod, cantidad);
             actualizarTotal(cantidad);
         });
 
         inputCantidad.addEventListener("change", () => {
-            let nuevaCantidad = parseInt(inputCantidad.value);
-            if (isNaN(nuevaCantidad) || nuevaCantidad < 0) nuevaCantidad = 0;
-            inputCantidad.value = nuevaCantidad;
-            carrito.actualizarUnidades(prod, nuevaCantidad);
-            actualizarTotal(nuevaCantidad);
+
+            let cantidad = parseInt(inputCantidad.value);
+            // Compruebo que cantidad este entre los parametros min y max permitidos
+            cantidad = getReviewedQuantity(cantidad);
+
+            inputCantidad.value = cantidad;
+            carrito.actualizarUnidades(prod, cantidad);
+            actualizarTotal(cantidad);
+
         });
 
         contenedor.appendChild(tr);
     });
 }
-
