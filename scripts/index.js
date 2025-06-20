@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // const proxy = 'https://cors-anywhere.herokuapp.com/';
 
     // FELIX : He dejado estas 2 URLs en jsonBlob, donde el API retorna 3 o 5 productos, para hacer pruebas
-    //         de renderizado
+    //         de renderizado dinámico dependiendo del contenido de la API
     // Tres productos
     const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792'; 
 
