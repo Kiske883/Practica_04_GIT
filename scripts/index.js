@@ -246,6 +246,8 @@ const productsRender = (lista = productos) => {
 
         // le asignamos a data-id el id unico del producto
         inputCantidad.dataset.id = prod.SKU;
+        // Le añado name a los inputs, para quitar las advertencias del navegador que me exige en los inputs name o id
+        inputCantidad.name = `inputName_${prod.SKU}`;
 
         const btnRestar = clone.querySelector(".btn-restar");
         const btnSumar = clone.querySelector(".btn-sumar");
