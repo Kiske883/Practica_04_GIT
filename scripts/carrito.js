@@ -16,13 +16,10 @@ class Carrito {
                 this.items = this.items.filter(it => it.SKU !== producto.SKU);
             }
         } else {
-            if (cantidad > 0) {
-                this.items.push({
-                    SKU: producto.SKU,
-                    title: producto.title,
-                    price: parseFloat(producto.price),
-                    cantidad: cantidad
-                });
+            let myItem = new InfoItemBean(producto.SKU, producto.title, parseFloat(producto.price), cantidad) ;
+
+            if ( cantidad > 0 ) {
+                this.items.push( myItem );
             }
         }
         totalRender(this);
@@ -41,15 +38,17 @@ class Carrito {
         const myItem = this.items.find(item => item.SKU === sku);
 
         // return myItem ? { sku: myItem.SKU, quantity: myItem.cantidad } : null;
-        return myItem ? new Item(myItem.SKU, myItem.cantidad) : null;
+        // Creo y devuelvo la clase InfoProductBean
+        return myItem ? new InfoProductBean(myItem.SKU, myItem.cantidad) : null;
 
     }
     
     obtenerCarrito() {
         // Devuelve información de los productos añadidos al carrito
         // Además del total calculado de todos los productos y el currency
+        /*
         return {
-            total: this.getTotal().toFixed(2),
+            total: this.#getTotal().toFixed(2),
             currency: moneda,
             products: this.items.map(item => ({
                 sku: item.SKU,
@@ -58,9 +57,16 @@ class Carrito {
                 cantidad: item.cantidad
             }))
         };
+        */
+        return {
+            total: this.#getTotal().toFixed(2),
+            currency: moneda,
+            products:  this.items.map(item => new InfoItemBean(item.SKU, item.title, item.price, item.cantidad))
+        };
     }
 
-    getTotal() {
+    // La declaro privada ya que solo la utilizo internamente en la clase
+    #getTotal() {
         return this.items.reduce((acc, item) => acc + item.price * item.cantidad, 0);
     }
     

@@ -26,6 +26,7 @@ const init = async (data) => {
     // Informo las variables en el momento que recibo la respuesta
     // para no tener problemas de undefined
     moneda = data.currency;
+
     productos = data.products;
 
     productsRender();
@@ -107,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // FELIX : He dejado estas 2 URLs en jsonBlob, donde el API retorna 3 o 5 productos, para hacer pruebas
     //         de renderizado dinámico dependiendo del contenido de la API
     // Tres productos
-    const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792'; 
+    const url = 'https://jsonblob.com/api/jsonBlob/1382678408647073792';
 
     // Cinco productos
     // const url = 'https://jsonblob.com/api/jsonBlob/1385546057181749248'; 
@@ -148,7 +149,10 @@ const totalRender = (carrito) => {
     //         ... pero es que lo encuentro feo, no creo que haya ningun problema de seguridad, 
     //         ya que es mi codigo quien controla lo que se añade al innerHtml, en este caso ""
 
-    lista.innerHTML = "";
+    // lista.innerHTML = "";
+
+    // LAN0 - 20250625 - Rectificación a raiz de la practica de la última clase 20250624, así me ahorro innerHTML
+    lista.textContent = "";
 
     carrito.items.forEach(item => {
         // Clonar el contenido del template
@@ -220,8 +224,7 @@ const productsRender = (lista = productos) => {
     const contenedor = document.querySelector(".tb-products-container");
     const template = document.querySelector("#product-row-template");
 
-    // LAN0 - 20250613 - Lo comentado anteriormente
-    contenedor.innerHTML = "";
+    contenedor.textContent = "";
 
     lista.forEach(prod => {
         const clone = template.content.cloneNode(true);
@@ -241,6 +244,9 @@ const productsRender = (lista = productos) => {
         inputCantidad.min = minUds;
         inputCantidad.max = maxUds;
 
+        // le asignamos a data-id el id unico del producto
+        inputCantidad.dataset.id = prod.SKU;
+
         const btnRestar = clone.querySelector(".btn-restar");
         const btnSumar = clone.querySelector(".btn-sumar");
 
@@ -254,21 +260,26 @@ const productsRender = (lista = productos) => {
             totalEl.textContent = `${(precio * cantidad).toFixed(2)} ${moneda}`;
         };
 
-        let producto = carrito.obtenerInformacionProducto(prod.SKU);
-        let cantidad = producto ? producto.cantidad : minUds;
+        let infoResultBean = carrito.obtenerInformacionProducto(prod.SKU);
+        let cantidad = infoResultBean ? infoResultBean.cantidad : minUds;
 
         inputCantidad.value = cantidad;
         actualizarTotal(cantidad);
 
         // LAN0 - 20250620 - al añadir minUds, podria ser modificable en lugar de 0 por ejemplo 10, tengo que controlar que si minUds > 0
         //                   actualice el total, ya que si no arrancaria con los productos por ejemplo a 10, y carrito estaria vacio.
-        if (!producto) {
+        if (minUds > 0) {
             carrito.actualizarUnidades(prod, cantidad);
         }
+
+
+        /* LAN0 - 20250625 - Anulamos la asignación de eventos click en el mismo bucle, y lo asignamos directamente 
+           al .tb-products-container para ahorrarnoos eventos a raiz del ejercicio de movies clase del 20250624
 
         btnRestar.addEventListener("click", () => {
 
             cantidad = Math.max(inputCantidad.min, parseInt(inputCantidad.value) - 1);
+
             // Compruebo que cantidad este entre los parametros min y max permitidos
             cantidad = getReviewedQuantity(cantidad);
 
@@ -280,6 +291,7 @@ const productsRender = (lista = productos) => {
         btnSumar.addEventListener("click", () => {
 
             cantidad = Math.min(inputCantidad.max, parseInt(inputCantidad.value) + 1);
+
             // Compruebo que cantidad este entre los parametros min y max permitidos
             cantidad = getReviewedQuantity(cantidad);
 
@@ -287,10 +299,12 @@ const productsRender = (lista = productos) => {
             carrito.actualizarUnidades(prod, cantidad);
             actualizarTotal(cantidad);
         });
+
 
         inputCantidad.addEventListener("change", () => {
 
-            let cantidad = parseInt(inputCantidad.value);
+            cantidad = parseInt(inputCantidad.value);
+
             // Compruebo que cantidad este entre los parametros min y max permitidos
             cantidad = getReviewedQuantity(cantidad);
 
@@ -299,7 +313,63 @@ const productsRender = (lista = productos) => {
             actualizarTotal(cantidad);
 
         });
-
+        */
         contenedor.appendChild(tr);
     });
+
+    contenedor.addEventListener("click", (event) => {
+
+        if (event.target.matches(".btn-restar, .btn-sumar")) {
+
+            const tr = event.target.closest("tr");
+            const input = tr.querySelector(".inputNumber");
+            const sku = input.dataset.id;
+
+            cantidad = parseInt(input.value);
+
+            if (event.target.classList.contains("btn-restar")) {
+                cantidad = Math.max(minUds, cantidad - 1);
+            } else if (event.target.classList.contains("btn-sumar")) {
+                cantidad = Math.min(maxUds, cantidad + 1);
+            }            
+
+            // Compruebo que cantidad este entre los parametros min y max permitidos
+            cantidad = getReviewedQuantity(cantidad);
+            input.value = cantidad;
+
+            const prod = lista.find(item => item.SKU === sku);
+
+            carrito.actualizarUnidades(prod, cantidad);
+
+            const precio = parseFloat(tr.querySelector(".product-price").textContent);
+            tr.querySelector(".product-total").textContent = `${(precio * cantidad).toFixed(2)} ${moneda}`;
+        }
+    });
+
+    contenedor.addEventListener("change", (event) => {
+
+        if (event.target.matches(".inputNumber")) {
+
+            const input = event.target;
+            const tr = input.closest("tr");
+            const sku = input.dataset.id;
+
+            let cantidad = parseInt(input.value);
+            const minUds = parseInt(input.min);
+            const maxUds = parseInt(input.max);
+
+            cantidad = Math.min(maxUds, Math.max(minUds, cantidad));
+
+            // Compruebo que cantidad este entre los parametros min y max permitidos
+            cantidad = getReviewedQuantity(cantidad);
+            input.value = cantidad;
+
+            const prod = lista.find(item => item.SKU === sku);
+            carrito.actualizarUnidades(prod, cantidad);
+
+            const precio = parseFloat(tr.dataset.precio || prod.price);
+            tr.querySelector(".product-total").textContent = `${(precio * cantidad).toFixed(2)} ${moneda}`;
+        }
+    });
+
 }
