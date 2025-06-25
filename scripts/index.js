@@ -187,7 +187,7 @@ const headerProductsRender = () => {
     const headerTotal = clone.querySelector(".header-total");
     */
 
-    // LAN0 - 20250618 - Para mejorar codigo, desestructuro el array devuelto por querySelectorAll
+    // LAN0 - 20250618 - Para refactorizar codigo, desestructuro el array devuelto por querySelectorAll
     const [
         headerProduct,
         headerQuantity,
@@ -204,8 +204,8 @@ const headerProductsRender = () => {
 
 }
 
-// LAN0 - 20250620 - Esta funcion, la añadiría como metodo a la clase carrito pero para no meter la pata
-//                   salvo getTotal(), voy a mantenerme fiel a los metodos descritos de la practica
+// LAN0 - 20250620 - Esta funcion, la añadiría como metodo a la clase carrito pero voy a mantenerme fiel
+//                   salvo getTotal(), a los metodos descritos en la practica
 const getReviewedQuantity = (cantidad) => {
 
     if (isNaN(cantidad)) cantidad = parseInt(minUds);
@@ -271,7 +271,6 @@ const productsRender = (lista = productos) => {
         if (minUds > 0) {
             carrito.actualizarUnidades(prod, cantidad);
         }
-
 
         /* LAN0 - 20250625 - Anulamos la asignación de eventos click en el mismo bucle, y lo asignamos directamente 
            al .tb-products-container para ahorrarnoos eventos a raiz del ejercicio de movies clase del 20250624

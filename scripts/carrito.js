@@ -38,26 +38,14 @@ class Carrito {
         const myItem = this.items.find(item => item.SKU === sku);
 
         // return myItem ? { sku: myItem.SKU, quantity: myItem.cantidad } : null;
-        // Creo y devuelvo la clase InfoProductBean
-        return myItem ? new InfoProductBean(myItem.SKU, myItem.cantidad) : null;
+        // Azucareo un poco, creo y devuelvo la clase InfoResultBean
+        return myItem ? new InfoResultBean(myItem.SKU, myItem.cantidad) : null;
 
     }
     
     obtenerCarrito() {
         // Devuelve información de los productos añadidos al carrito
         // Además del total calculado de todos los productos y el currency
-        /*
-        return {
-            total: this.#getTotal().toFixed(2),
-            currency: moneda,
-            products: this.items.map(item => ({
-                sku: item.SKU,
-                title: item.title,
-                price: item.price,
-                cantidad: item.cantidad
-            }))
-        };
-        */
         return {
             total: this.#getTotal().toFixed(2),
             currency: moneda,
